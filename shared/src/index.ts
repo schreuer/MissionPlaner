@@ -59,7 +59,12 @@ export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
   ],
 };
 
-/** Maximum number of players allowed per role on each ship type. */
+/**
+ * Maximum number of players allowed per role on each ship type.
+ * Every role listed in SHIP_ALLOWED_ROLES has an explicit entry here.
+ * If a role were somehow absent, both the server and the client fall back
+ * to a capacity of 1 (one player per role) as a safe default.
+ */
 export const SHIP_ROLE_CAPACITY: Record<ShipType, Partial<Record<Role, number>>> = {
   Fighter:   { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
   Bomber:    { Pilot: 1, "Co-Pilot": 1, Bombardier: 2, Gunner: 2 },

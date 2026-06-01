@@ -1,4 +1,4 @@
-import type { ShipSlot } from "@mission-planer/shared";
+import type { PlayerAssignment, ShipSlot } from "@mission-planer/shared";
 import { safeAvatarUrl } from "../lib/avatar";
 
 const SHIP_ICONS: Record<string, string> = {
@@ -10,6 +10,63 @@ const SHIP_ICONS: Record<string, string> = {
   Cruiser: "🚀",
   Carrier: "🛸",
 };
+
+function PlayerRow({
+  player,
+  isCurrentUser,
+}: {
+  player: PlayerAssignment;
+  isCurrentUser: boolean;
+}) {
+  // Validate URL once so both the condition and the src attribute use the same safe value.
+  const avatarSrc = safeAvatarUrl(player.avatarUrl);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        padding: "4px 8px",
+        borderRadius: "var(--radius)",
+        background: isCurrentUser ? "rgba(88,101,242,0.15)" : "var(--bg-input)",
+      }}
+    >
+      {avatarSrc ? (
+        <img
+          src={avatarSrc}
+          alt={player.username}
+          style={{ width: 20, height: 20, borderRadius: "50%" }}
+        />
+      ) : (
+        <div
+          style={{
+            width: 20,
+            height: 20,
+            borderRadius: "50%",
+            background: "var(--accent)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontSize: 10,
+            fontWeight: 700,
+            color: "#fff",
+            flexShrink: 0,
+          }}
+        >
+          {player.username[0]?.toUpperCase()}
+        </div>
+      )}
+      <span style={{ flex: 1, fontSize: 13 }}>
+        {player.username}
+        {isCurrentUser && (
+          <span style={{ color: "var(--text-muted)", marginLeft: 4 }}>(you)</span>
+        )}
+      </span>
+      <span className="tag" style={{ fontSize: 10 }}>{player.role}</span>
+    </div>
+  );
+}
 
 interface Props {
   ship: ShipSlot;
@@ -70,52 +127,11 @@ export function ShipCard({
           </div>
         ) : (
           ship.players.map((p) => (
-            <div
+            <PlayerRow
               key={p.userId}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "4px 8px",
-                borderRadius: "var(--radius)",
-                background: p.userId === currentUserId
-                  ? "rgba(88,101,242,0.15)"
-                  : "var(--bg-input)",
-              }}
-            >
-              {safeAvatarUrl(p.avatarUrl) ? (
-                <img
-                  src={safeAvatarUrl(p.avatarUrl)}
-                  alt={p.username}
-                  style={{ width: 20, height: 20, borderRadius: "50%" }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: "50%",
-                    background: "var(--accent)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    color: "#fff",
-                    flexShrink: 0,
-                  }}
-                >
-                  {p.username[0]?.toUpperCase()}
-                </div>
-              )}
-              <span style={{ flex: 1, fontSize: 13 }}>
-                {p.username}
-                {p.userId === currentUserId && (
-                  <span style={{ color: "var(--text-muted)", marginLeft: 4 }}>(you)</span>
-                )}
-              </span>
-              <span className="tag" style={{ fontSize: 10 }}>{p.role}</span>
-            </div>
+              player={p}
+              isCurrentUser={p.userId === currentUserId}
+            />
           ))
         )}
       </div>
