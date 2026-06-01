@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ShipType } from "@mission-planer/shared";
-import { SHIP_ALLOWED_ROLES } from "@mission-planer/shared";
+import { SHIP_ALLOWED_ROLES, SHIP_ROLE_CAPACITY, shipTotalCapacity } from "@mission-planer/shared";
 
 const SHIP_TYPES: ShipType[] = Object.keys(SHIP_ALLOWED_ROLES) as ShipType[];
 
@@ -18,6 +18,9 @@ export function AddShipModal({ onAdd, onClose }: Props) {
     onAdd(type, shipName);
     onClose();
   }
+
+  const capacities = SHIP_ROLE_CAPACITY[type];
+  const totalCapacity = shipTotalCapacity(type);
 
   return (
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
@@ -47,12 +50,19 @@ export function AddShipModal({ onAdd, onClose }: Props) {
         </div>
 
         <div style={{ background: "var(--bg-input)", borderRadius: "var(--radius)", padding: 10 }}>
-          <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 4 }}>
-            Allowed Roles
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+            <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase" }}>
+              Crew Slots
+            </div>
+            <span className="tag" style={{ fontSize: 10 }}>
+              {totalCapacity} total
+            </span>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
             {SHIP_ALLOWED_ROLES[type].map((r) => (
-              <span key={r} className="tag">{r}</span>
+              <span key={r} className="tag" title={`Max ${capacities[r] ?? 1} player(s)`}>
+                {r} ×{capacities[r] ?? 1}
+              </span>
             ))}
           </div>
         </div>

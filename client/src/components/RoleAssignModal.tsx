@@ -1,5 +1,5 @@
 import type { ShipSlot, Role } from "@mission-planer/shared";
-import { SHIP_ALLOWED_ROLES } from "@mission-planer/shared";
+import { SHIP_ALLOWED_ROLES, SHIP_ROLE_CAPACITY } from "@mission-planer/shared";
 
 interface Props {
   ship: ShipSlot;
@@ -17,8 +17,8 @@ export function RoleAssignModal({
   onClose,
 }: Props) {
   const allowedRoles = SHIP_ALLOWED_ROLES[ship.type];
+  const capacities = SHIP_ROLE_CAPACITY[ship.type];
   const myAssignment = ship.players.find((p) => p.userId === currentUserId);
-  const takenRoles = new Set(ship.players.map((p) => p.role));
 
   return (
     <div
@@ -65,9 +65,14 @@ export function RoleAssignModal({
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
             {allowedRoles.map((role) => {
-              const takenBy = ship.players.find((p) => p.role === role);
-              const isMine = takenBy?.userId === currentUserId;
-              const isTaken = takenRoles.has(role) && !isMine;
+              const max = capacities[role] ?? 1;
+              const filled = ship.players.filter(
+                (p) => p.role === role && p.userId !== currentUserId
+              ).length;
+              const isMine = myAssignment?.role === role;
+              // Full = all capacity slots occupied by other players
+              const isFull = filled >= max;
+              const filledDisplay = isMine ? filled + 1 : filled;
 
               return (
                 <button
@@ -75,22 +80,31 @@ export function RoleAssignModal({
                   className="btn btn-ghost"
                   style={{
                     justifyContent: "space-between",
-                    opacity: isTaken ? 0.4 : 1,
+                    opacity: isFull && !isMine ? 0.4 : 1,
                     background: isMine ? "rgba(88,101,242,0.2)" : undefined,
                     borderColor: isMine ? "var(--accent)" : undefined,
                   }}
-                  disabled={isTaken}
+                  disabled={isFull && !isMine}
                   onClick={() => {
                     onAssign(ship.id, role);
                     onClose();
                   }}
                 >
                   <span>{role}</span>
-                  {takenBy && (
-                    <span style={{ fontSize: 11, color: "var(--text-muted)" }}>
-                      {isMine ? "You" : takenBy.username}
-                    </span>
-                  )}
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: filledDisplay >= max ? "var(--red)" : "var(--text-muted)",
+                      fontVariantNumeric: "tabular-nums",
+                    }}
+                  >
+                    {filledDisplay}/{max}
+                    {isMine && (
+                      <span style={{ color: "var(--green)", marginLeft: 4 }}>
+                        (you)
+                      </span>
+                    )}
+                  </span>
                 </button>
               );
             })}

@@ -9,6 +9,7 @@ import {
   WsClientMessage,
   WsServerMessage,
   SHIP_ALLOWED_ROLES,
+  SHIP_ROLE_CAPACITY,
 } from "@mission-planer/shared";
 
 // ---------------------------------------------------------------------------
@@ -212,6 +213,19 @@ wss.on("connection", (ws) => {
           sendTo(ws, {
             type: "ERROR",
             message: `Role ${msg.role} is not allowed on ${ship.type}`,
+          });
+          return;
+        }
+
+        // Validate role capacity (exclude the player themselves in case they're switching)
+        const capacity = SHIP_ROLE_CAPACITY[ship.type][msg.role] ?? 1;
+        const currentCount = ship.players.filter(
+          (p) => p.role === msg.role && p.userId !== msg.userId
+        ).length;
+        if (currentCount >= capacity) {
+          sendTo(ws, {
+            type: "ERROR",
+            message: `Role ${msg.role} on ${ship.name} is full (${capacity}/${capacity})`,
           });
           return;
         }

@@ -59,6 +59,22 @@ export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
   ],
 };
 
+/** Maximum number of players allowed per role on each ship type. */
+export const SHIP_ROLE_CAPACITY: Record<ShipType, Partial<Record<Role, number>>> = {
+  Fighter:   { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
+  Bomber:    { Pilot: 1, "Co-Pilot": 1, Bombardier: 2, Gunner: 2 },
+  Scout:     { Pilot: 1, "Co-Pilot": 1, Scout: 2, Navigator: 1 },
+  Frigate:   { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Medic: 1, Marine: 6 },
+  Destroyer: { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 2, Marine: 8, Technician: 2 },
+  Cruiser:   { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 10, Technician: 2, "Squadron Leader": 1 },
+  Carrier:   { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, Technician: 3, "Squadron Leader": 2 },
+};
+
+/** Total crew capacity for a given ship type (sum of all role capacities). */
+export function shipTotalCapacity(type: ShipType): number {
+  return Object.values(SHIP_ROLE_CAPACITY[type]).reduce((a, b) => a + b, 0);
+}
+
 // ---------------------------------------------------------------------------
 // Mission presets
 // ---------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 import type { ShipSlot } from "@mission-planer/shared";
+import { safeAvatarUrl } from "../lib/avatar";
 
 const SHIP_ICONS: Record<string, string> = {
   Fighter: "✈",
@@ -82,9 +83,9 @@ export function ShipCard({
                   : "var(--bg-input)",
               }}
             >
-              {p.avatarUrl ? (
+              {safeAvatarUrl(p.avatarUrl) ? (
                 <img
-                  src={p.avatarUrl}
+                  src={safeAvatarUrl(p.avatarUrl)}
                   alt={p.username}
                   style={{ width: 20, height: 20, borderRadius: "50%" }}
                 />
