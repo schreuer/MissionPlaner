@@ -121,14 +121,14 @@ Mission presets require ships by their tactical **role**, not by specific model.
 | Redeemer | Pilot, Co-Pilot, Gunner |
 | Constellation Andromeda | Pilot, Co-Pilot, Gunner |
 | Hammerhead | Captain, Navigator, Engineer, Gunner, Medic |
-| Polaris | Captain, Navigator, Engineer, Gunner, Marine, Medic, Technician |
+| Polaris | Captain, Navigator, Engineer, Gunner, Marine, Medic |
 | Valkyrie | Pilot, Co-Pilot, Gunner, Marine, Medic |
 | A2 Hercules | Pilot, Co-Pilot, Gunner, Bombardier, Marine, Engineer |
-| Javelin | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
-| Idris-M | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
-| Idris-P | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
-| Kraken | Captain, Navigator, Engineer, Medic, Technician, Squadron Leader |
-| Liberator | Captain, Navigator, Engineer, Medic, Technician, Squadron Leader |
+| Javelin | Captain, Navigator, Engineer, Gunner, Medic, Marine, Squadron Leader |
+| Idris-M | Captain, Navigator, Engineer, Gunner, Medic, Marine, Squadron Leader |
+| Idris-P | Captain, Navigator, Engineer, Gunner, Medic, Marine, Squadron Leader |
+| Kraken | Captain, Navigator, Engineer, Medic, Squadron Leader |
+| Liberator | Captain, Navigator, Engineer, Medic, Squadron Leader |
 
 ## WebSocket Protocol
 
