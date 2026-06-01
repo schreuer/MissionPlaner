@@ -93,16 +93,16 @@ export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
   "Constellation Andromeda": ["Pilot", "Co-Pilot", "Gunner"],
   // ── Frigates / assault ships ──────────────────────────────────────────────
   "Hammerhead":           ["Captain", "Navigator", "Engineer", "Gunner", "Medic"],
-  "Polaris":              ["Captain", "Navigator", "Engineer", "Gunner", "Marine", "Medic", "Technician"],
+  "Polaris":              ["Captain", "Navigator", "Engineer", "Gunner", "Marine", "Medic"],
   "Valkyrie":             ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic"],
   "A2 Hercules":          ["Pilot", "Co-Pilot", "Gunner", "Bombardier", "Marine", "Engineer"],
   // ── Capital ships ─────────────────────────────────────────────────────────
-  "Javelin":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Technician", "Squadron Leader"],
-  "Idris-M":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Technician", "Squadron Leader"],
-  "Idris-P":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Technician", "Squadron Leader"],
+  "Javelin":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Squadron Leader"],
+  "Idris-M":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Squadron Leader"],
+  "Idris-P":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine",  "Squadron Leader"],
   // ── Carriers ─────────────────────────────────────────────────────────────
-  "Kraken":               ["Captain", "Navigator", "Engineer", "Medic", "Technician", "Squadron Leader"],
-  "Liberator":            ["Captain", "Navigator", "Engineer", "Medic", "Technician", "Squadron Leader"],
+  "Kraken":               ["Captain", "Navigator", "Engineer", "Medic", "Squadron Leader"],
+  "Liberator":            ["Captain", "Navigator", "Engineer", "Medic", "Squadron Leader"],
 };
 
 /**
@@ -144,16 +144,16 @@ export const SHIP_ROLE_CAPACITY: Record<ShipType, Partial<Record<Role, number>>>
   "Constellation Andromeda": { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
   // ── Frigates / assault ships ──────────────────────────────────────────────
   "Hammerhead":           { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 1 },
-  "Polaris":              { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Marine: 4, Medic: 1, Technician: 1 },
+  "Polaris":              { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Marine: 4, Medic: 1 },
   "Valkyrie":             { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 8, Medic: 1 },
   "A2 Hercules":          { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Bombardier: 2, Marine: 6, Engineer: 1 },
   // ── Capital ships ─────────────────────────────────────────────────────────
-  "Javelin":              { Captain: 1, Navigator: 1, Engineer: 4, Gunner: 8, Medic: 2, Marine: 10, Technician: 2, "Squadron Leader": 1 },
-  "Idris-M":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 8, Technician: 2, "Squadron Leader": 1 },
-  "Idris-P":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 6, Medic: 2, Marine: 6, Technician: 2, "Squadron Leader": 1 },
+  "Javelin":              { Captain: 1, Navigator: 1, Engineer: 4, Gunner: 8, Medic: 2, Marine: 10, "Squadron Leader": 1 },
+  "Idris-M":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 8,  "Squadron Leader": 1 },
+  "Idris-P":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 6, Medic: 2, Marine: 6,  "Squadron Leader": 1 },
   // ── Carriers ─────────────────────────────────────────────────────────────
-  "Kraken":               { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, Technician: 3, "Squadron Leader": 2 },
-  "Liberator":            { Captain: 1, Navigator: 1, Engineer: 2, Medic: 1, Technician: 2, "Squadron Leader": 1 },
+  "Kraken":               { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, "Squadron Leader": 2 },
+  "Liberator":            { Captain: 1, Navigator: 1, Engineer: 2, Medic: 1, "Squadron Leader": 1 },
 };
 
 /** Total crew capacity for a given ship type (sum of all role capacities). */
