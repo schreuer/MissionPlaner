@@ -59,7 +59,7 @@ export type Role =
   | "Squadron Leader"
   | "Scout"
   | "Marine"
-
+  | "Technician";
 export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
   // ── Light / single-seat fighters ────────────────────────────────────────
   "Gladius":              ["Pilot"],
@@ -162,11 +162,68 @@ export function shipTotalCapacity(type: ShipType): number {
 }
 
 // ---------------------------------------------------------------------------
+// Ship roles – tactical category of a ship in a mission
+// ---------------------------------------------------------------------------
+
+export type ShipRole =
+  | "Fighter"
+  | "Bomber"
+  | "Scout"
+  | "Gunship"
+  | "Frigate"
+  | "Capital"
+  | "Carrier";
+
+/** Maps each named ship to its tactical ship role. */
+export const SHIP_ROLE_MAP: Record<ShipType, ShipRole> = {
+  // Fighters
+  "Gladius":              "Fighter",
+  "Arrow":                "Fighter",
+  "M50":                  "Fighter",
+  "Sabre":                "Fighter",
+  "F7C Hornet":           "Fighter",
+  "Talon":                "Fighter",
+  "Buccaneer":            "Fighter",
+  "F7C-M Super Hornet":   "Fighter",
+  "Scorpius":             "Fighter",
+  "Sabre Comet":          "Fighter",
+  "Vanguard Warden":      "Fighter",
+  "Vanguard Sentinel":    "Fighter",
+  "Corsair":              "Fighter",
+  // Bombers
+  "Eclipse":              "Bomber",
+  "Gladiator":            "Bomber",
+  "Vanguard Harbinger":   "Bomber",
+  "Retaliator":           "Bomber",
+  // Scouts
+  "Sabre Raven":          "Scout",
+  "F7C-S Hornet Ghost":   "Scout",
+  "F7C-R Hornet Tracker": "Scout",
+  "Terrapin":             "Scout",
+  "Herald":               "Scout",
+  // Gunships
+  "Redeemer":             "Gunship",
+  "Constellation Andromeda": "Gunship",
+  // Frigates
+  "Hammerhead":           "Frigate",
+  "Polaris":              "Frigate",
+  "Valkyrie":             "Frigate",
+  "A2 Hercules":          "Frigate",
+  // Capital ships
+  "Javelin":              "Capital",
+  "Idris-M":              "Capital",
+  "Idris-P":              "Capital",
+  // Carriers
+  "Kraken":               "Carrier",
+  "Liberator":            "Carrier",
+};
+
+// ---------------------------------------------------------------------------
 // Mission presets
 // ---------------------------------------------------------------------------
 
 export interface ShipRequirement {
-  type: ShipType;
+  role: ShipRole;
   count: number;
 }
 
@@ -196,7 +253,10 @@ export interface PlayerAssignment {
 export interface ShipSlot {
   id: string;
   type: ShipType;
+  role: ShipRole;
   name: string;
+  ownerId: string;
+  ownerName: string;
   players: PlayerAssignment[];
 }
 
@@ -214,8 +274,8 @@ export interface MissionSession {
 export interface GoalProgress {
   totalShipsRequired: number;
   totalShipsMet: number;
-  shipsByType: Array<{
-    type: ShipType;
+  shipsByRole: Array<{
+    role: ShipRole;
     required: number;
     current: number;
     met: boolean;
@@ -235,9 +295,9 @@ export function computeGoalProgress(
   preset: MissionPreset,
   ships: ShipSlot[]
 ): GoalProgress {
-  const shipsByType = preset.shipRequirements.map((req) => {
-    const current = ships.filter((s) => s.type === req.type).length;
-    return { type: req.type, required: req.count, current, met: current >= req.count };
+  const shipsByRole = preset.shipRequirements.map((req) => {
+    const current = ships.filter((s) => s.role === req.role).length;
+    return { role: req.role, required: req.count, current, met: current >= req.count };
   });
 
   const allPlayers = ships.flatMap((s) => s.players);
@@ -247,18 +307,18 @@ export function computeGoalProgress(
     return { role: req.role, required: req.count, current, met: current >= req.count };
   });
 
-  const totalShipsRequired = shipsByType.reduce((a, b) => a + b.required, 0);
-  const totalShipsMet = shipsByType.reduce((a, b) => a + Math.min(b.current, b.required), 0);
+  const totalShipsRequired = shipsByRole.reduce((a, b) => a + b.required, 0);
+  const totalShipsMet = shipsByRole.reduce((a, b) => a + Math.min(b.current, b.required), 0);
   const totalRolesRequired = roleProgress.reduce((a, b) => a + b.required, 0);
   const totalRolesMet = roleProgress.reduce((a, b) => a + Math.min(b.current, b.required), 0);
 
   const allMet =
-    shipsByType.every((s) => s.met) && roleProgress.every((r) => r.met);
+    shipsByRole.every((s) => s.met) && roleProgress.every((r) => r.met);
 
   return {
     totalShipsRequired,
     totalShipsMet,
-    shipsByType,
+    shipsByRole,
     totalRolesRequired,
     totalRolesMet,
     roleProgress,
@@ -275,7 +335,7 @@ export const MISSION_PRESETS: MissionPreset[] = [
     id: "recon",
     name: "Recon Run",
     description: "Light scouting mission – fast and quiet.",
-    shipRequirements: [{ type: "Terrapin", count: 2 }],
+    shipRequirements: [{ role: "Scout", count: 2 }],
     roleRequirements: [
       { role: "Pilot", count: 2 },
       { role: "Scout", count: 2 },
@@ -287,8 +347,8 @@ export const MISSION_PRESETS: MissionPreset[] = [
     name: "Strike Mission",
     description: "Surgical strike on a high-value target.",
     shipRequirements: [
-      { type: "F7C Hornet", count: 4 },
-      { type: "Retaliator", count: 2 },
+      { role: "Fighter", count: 4 },
+      { role: "Bomber", count: 2 },
     ],
     roleRequirements: [
       { role: "Pilot", count: 6 },
@@ -302,9 +362,9 @@ export const MISSION_PRESETS: MissionPreset[] = [
     name: "Carrier Escort",
     description: "Protect a carrier through hostile territory.",
     shipRequirements: [
-      { type: "Kraken", count: 1 },
-      { type: "Hammerhead", count: 2 },
-      { type: "F7C-M Super Hornet", count: 4 },
+      { role: "Carrier", count: 1 },
+      { role: "Frigate", count: 2 },
+      { role: "Fighter", count: 4 },
     ],
     roleRequirements: [
       { role: "Captain", count: 3 },
@@ -320,10 +380,10 @@ export const MISSION_PRESETS: MissionPreset[] = [
     name: "Full Assault",
     description: "Large-scale frontal assault on an enemy fleet.",
     shipRequirements: [
-      { type: "Javelin", count: 2 },
-      { type: "Idris-M", count: 1 },
-      { type: "F7C Hornet", count: 6 },
-      { type: "Retaliator", count: 2 },
+      { role: "Capital", count: 2 },
+      { role: "Frigate", count: 1 },
+      { role: "Fighter", count: 6 },
+      { role: "Bomber", count: 2 },
     ],
     roleRequirements: [
       { role: "Captain", count: 3 },
@@ -344,7 +404,7 @@ export const MISSION_PRESETS: MissionPreset[] = [
 export type WsClientMessage =
   | { type: "JOIN"; sessionId: string; userId: string; username: string }
   | { type: "CREATE_SESSION"; presetId: string; userId: string; username: string }
-  | { type: "ADD_SHIP"; sessionId: string; shipType: ShipType; shipName: string }
+  | { type: "ADD_SHIP"; sessionId: string; shipType: ShipType; shipName: string; userId: string; username: string }
   | { type: "REMOVE_SHIP"; sessionId: string; shipId: string }
   | { type: "ASSIGN_ROLE"; sessionId: string; shipId: string; role: Role; userId: string; username: string }
   | { type: "UNASSIGN_ROLE"; sessionId: string; shipId: string; userId: string }

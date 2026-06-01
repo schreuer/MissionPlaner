@@ -127,9 +127,10 @@ export function ShipCard({
         <span style={{ fontSize: 20 }}>{SHIP_ICONS[ship.type] ?? "🛸"}</span>
         <div style={{ flex: 1 }}>
           <div style={{ fontWeight: 700, fontSize: 15 }}>{ship.name}</div>
-          <span className="tag" style={{ fontSize: 10 }}>
-            {ship.type}
-          </span>
+          <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 2 }}>
+            <span className="tag" style={{ fontSize: 10 }}>{ship.type}</span>
+            <span className="tag" style={{ fontSize: 10 }}>{ship.role}</span>
+          </div>
         </div>
         {isHost && (
           <button
@@ -140,6 +141,11 @@ export function ShipCard({
             ✕
           </button>
         )}
+      </div>
+
+      {/* Owner */}
+      <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
+        Owner: <span style={{ color: "var(--text-normal)" }}>{ship.ownerName}</span>
       </div>
 
       {/* Player list */}

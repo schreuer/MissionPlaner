@@ -44,7 +44,7 @@ export function GoalProgress({ session }: Props) {
       </div>
 
       {/* Ships progress */}
-      {progress.shipsByType.length > 0 && (
+      {progress.shipsByRole.length > 0 && (
         <div>
           <div
             style={{
@@ -58,8 +58,8 @@ export function GoalProgress({ session }: Props) {
             Ships ({progress.totalShipsMet}/{progress.totalShipsRequired})
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {progress.shipsByType.map((s) => (
-              <div key={s.type}>
+            {progress.shipsByRole.map((s) => (
+              <div key={s.role}>
                 <div
                   style={{
                     display: "flex",
@@ -68,7 +68,7 @@ export function GoalProgress({ session }: Props) {
                     marginBottom: 2,
                   }}
                 >
-                  <span>{s.type}</span>
+                  <span>{s.role}</span>
                   <span
                     style={{ color: s.met ? "var(--green)" : "var(--text-muted)" }}
                   >

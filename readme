@@ -73,12 +73,26 @@ Set the tunnel URL as the **URL Mapping** in your Discord Application's Activity
 
 | Concept | Description |
 |---|---|
-| `MissionPreset` | Name, description, list of `{shipType, count}` and `{role, count}` requirements |
-| `ShipSlot` | A ship on the board with a type and assigned players |
+| `MissionPreset` | Name, description, list of `{shipRole, count}` and `{role, count}` requirements |
+| `ShipSlot` | A ship on the board with a type, tactical role, owner, and assigned players |
 | `PlayerAssignment` | A Discord user bound to a specific role on a ship |
 | `MissionSession` | One planning board: a chosen preset + list of ships + host |
 
-### Ship types and allowed roles
+### Ship roles (tactical categories)
+
+Mission presets require ships by their tactical **role**, not by specific model. Each ship model maps to exactly one role:
+
+| Role | Ships |
+|---|---|
+| Fighter | Gladius, Arrow, M50, Sabre, F7C Hornet, Talon, Buccaneer, F7C-M Super Hornet, Scorpius, Sabre Comet, Vanguard Warden, Vanguard Sentinel, Corsair |
+| Bomber | Eclipse, Gladiator, Vanguard Harbinger, Retaliator |
+| Scout | Sabre Raven, F7C-S Hornet Ghost, F7C-R Hornet Tracker, Terrapin, Herald |
+| Gunship | Redeemer, Constellation Andromeda |
+| Frigate | Hammerhead, Polaris, Valkyrie, A2 Hercules |
+| Capital | Javelin, Idris-M, Idris-P |
+| Carrier | Kraken, Liberator |
+
+### Ship models and allowed crew roles
 
 | Ship | Allowed Roles |
 |---|---|
@@ -126,7 +140,7 @@ All real-time communication uses JSON messages over a single WebSocket connectio
 |---|---|---|
 | `CREATE_SESSION` | `presetId`, `userId`, `username` | Create a new planning session |
 | `JOIN` | `sessionId`, `userId`, `username` | Join an existing session by code |
-| `ADD_SHIP` | `sessionId`, `shipType`, `shipName` | Add a ship to the board |
+| `ADD_SHIP` | `sessionId`, `shipType`, `shipName`, `userId`, `username` | Add a ship to the board; the sending user becomes the ship's owner |
 | `REMOVE_SHIP` | `sessionId`, `shipId` | Remove a ship (host only enforced client-side) |
 | `ASSIGN_ROLE` | `sessionId`, `shipId`, `role`, `userId`, `username` | Claim a role on a ship |
 | `UNASSIGN_ROLE` | `sessionId`, `shipId`, `userId` | Leave a ship |

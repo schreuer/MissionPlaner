@@ -118,10 +118,17 @@ export function useSession(identity: Identity | null): UseSessionResult {
 
   const addShip = useCallback(
     (type: ShipType, name: string) => {
-      if (!session) return;
-      send({ type: "ADD_SHIP", sessionId: session.id, shipType: type, shipName: name });
+      if (!session || !identity) return;
+      send({
+        type: "ADD_SHIP",
+        sessionId: session.id,
+        shipType: type,
+        shipName: name,
+        userId: identity.userId,
+        username: identity.username,
+      });
     },
-    [send, session]
+    [send, session, identity]
   );
 
   const removeShip = useCallback(

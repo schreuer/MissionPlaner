@@ -10,6 +10,7 @@ import {
   WsServerMessage,
   SHIP_ALLOWED_ROLES,
   SHIP_ROLE_CAPACITY,
+  SHIP_ROLE_MAP,
 } from "@mission-planer/shared";
 
 // ---------------------------------------------------------------------------
@@ -174,7 +175,10 @@ wss.on("connection", (ws) => {
         const ship: ShipSlot = {
           id: uuidv4(),
           type: msg.shipType,
+          role: SHIP_ROLE_MAP[msg.shipType],
           name: msg.shipName,
+          ownerId: msg.userId,
+          ownerName: msg.username,
           players: [],
         };
         session.ships.push(ship);
