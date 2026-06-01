@@ -106,12 +106,12 @@ function PresetCard({ preset }: { preset: MissionPreset }) {
 
       <div>
         <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 4 }}>
-          Ships Required
+          Minimal Ships
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {preset.shipRequirements.map((req) => (
-            <span key={req.type} className="tag">
-              {req.count}× {req.type}
+            <span key={req.role} className="tag">
+              {req.count}× {req.role}
             </span>
           ))}
         </div>
@@ -119,7 +119,7 @@ function PresetCard({ preset }: { preset: MissionPreset }) {
 
       <div>
         <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 4 }}>
-          Roles Required
+          Minimal Roles
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {preset.roleRequirements.map((req) => (
@@ -129,6 +129,36 @@ function PresetCard({ preset }: { preset: MissionPreset }) {
           ))}
         </div>
       </div>
+
+      {preset.optimalShipRequirements && preset.optimalShipRequirements.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 4 }}>
+            Optimal Ships
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {preset.optimalShipRequirements.map((req) => (
+              <span key={req.role} className="tag">
+                {req.count}× {req.role}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {preset.optimalRoleRequirements && preset.optimalRoleRequirements.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase", marginBottom: 4 }}>
+            Optimal Roles
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            {preset.optimalRoleRequirements.map((req) => (
+              <span key={req.role} className="tag">
+                {req.count}× {req.role}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

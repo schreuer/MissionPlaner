@@ -38,12 +38,12 @@ exports.SHIP_ALLOWED_ROLES = {
     // ── Multi-crew gunships ───────────────────────────────────────────────────
     "Redeemer": ["Pilot", "Co-Pilot", "Gunner"],
     "Constellation Andromeda": ["Pilot", "Co-Pilot", "Gunner"],
+    "Perseus": ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic"],
     // ── Frigates / assault ships ──────────────────────────────────────────────
     "Hammerhead": ["Captain", "Navigator", "Engineer", "Gunner", "Medic"],
     "Polaris": ["Captain", "Navigator", "Engineer", "Gunner", "Marine", "Medic"],
     "Valkyrie": ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic"],
     "A2 Hercules": ["Pilot", "Co-Pilot", "Gunner", "Bombardier", "Marine", "Engineer"],
-    "Perseus": ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic", "Technician"],
     // ── Capital ships ─────────────────────────────────────────────────────────
     "Javelin": ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Squadron Leader"],
     "Idris-M": ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Squadron Leader"],
@@ -51,6 +51,12 @@ exports.SHIP_ALLOWED_ROLES = {
     // ── Carriers ─────────────────────────────────────────────────────────────
     "Kraken": ["Captain", "Navigator", "Engineer", "Medic", "Squadron Leader"],
     "Liberator": ["Captain", "Navigator", "Engineer", "Medic", "Squadron Leader"],
+    // ── Transports ───────────────────────────────────────────────────────────
+    "Caterpillar": ["Pilot", "Co-Pilot", "Engineer", "Gunner"],
+    "Hull C": ["Pilot", "Engineer"],
+    "Freelancer MAX": ["Pilot", "Co-Pilot"],
+    "C2 Hercules": ["Pilot", "Co-Pilot", "Engineer"],
+    "Constellation Taurus": ["Pilot", "Co-Pilot", "Gunner"],
 };
 /**
  * Maximum number of players allowed per role on each ship.
@@ -90,7 +96,7 @@ exports.SHIP_ROLE_CAPACITY = {
     // ── Multi-crew gunships ───────────────────────────────────────────────────
     "Redeemer": { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
     "Constellation Andromeda": { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
-    "Perseus": { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 10, Medic: 2, Technician: 1 },
+    "Perseus": { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 10, Medic: 2 },
     // ── Frigates / assault ships ──────────────────────────────────────────────
     "Hammerhead": { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 1 },
     "Polaris": { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Marine: 4, Medic: 1 },
@@ -103,6 +109,12 @@ exports.SHIP_ROLE_CAPACITY = {
     // ── Carriers ─────────────────────────────────────────────────────────────
     "Kraken": { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, "Squadron Leader": 2 },
     "Liberator": { Captain: 1, Navigator: 1, Engineer: 2, Medic: 1, "Squadron Leader": 1 },
+    // ── Transports ───────────────────────────────────────────────────────────
+    "Caterpillar": { Pilot: 1, "Co-Pilot": 1, Engineer: 2, Gunner: 4 },
+    "Hull C": { Pilot: 1, Engineer: 1 },
+    "Freelancer MAX": { Pilot: 1, "Co-Pilot": 1 },
+    "C2 Hercules": { Pilot: 1, "Co-Pilot": 1, Engineer: 1 },
+    "Constellation Taurus": { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
 };
 /** Total crew capacity for a given ship type (sum of all role capacities). */
 function shipTotalCapacity(type) {
@@ -139,8 +151,8 @@ exports.SHIP_ROLE_MAP = {
     // Gunships
     "Redeemer": "Gunship",
     "Constellation Andromeda": "Gunship",
+    "Perseus": "Gunship",
     // Frigates
-    "Perseus": "Frigate",
     "Hammerhead": "Frigate",
     "Polaris": "Frigate",
     "Valkyrie": "Frigate",
@@ -152,6 +164,12 @@ exports.SHIP_ROLE_MAP = {
     // Carriers
     "Kraken": "Carrier",
     "Liberator": "Carrier",
+    // Transports
+    "Caterpillar": "Transport",
+    "Hull C": "Transport",
+    "Freelancer MAX": "Transport",
+    "C2 Hercules": "Transport",
+    "Constellation Taurus": "Transport",
 };
 function computeGoalProgress(preset, ships) {
     const shipsByRole = preset.shipRequirements.map((req) => {
@@ -168,6 +186,23 @@ function computeGoalProgress(preset, ships) {
     const totalRolesRequired = roleProgress.reduce((a, b) => a + b.required, 0);
     const totalRolesMet = roleProgress.reduce((a, b) => a + Math.min(b.current, b.required), 0);
     const allMet = shipsByRole.every((s) => s.met) && roleProgress.every((r) => r.met);
+    // Optimal tier
+    const hasOptimal =
+        (preset.optimalShipRequirements?.length ?? 0) > 0 ||
+        (preset.optimalRoleRequirements?.length ?? 0) > 0;
+    const optimalShipsByRole = (preset.optimalShipRequirements ?? []).map((req) => {
+        const current = ships.filter((s) => s.role === req.role).length;
+        return { role: req.role, required: req.count, current, met: current >= req.count };
+    });
+    const optimalRoleProgress = (preset.optimalRoleRequirements ?? []).map((req) => {
+        const current = allPlayers.filter((p) => p.role === req.role).length;
+        return { role: req.role, required: req.count, current, met: current >= req.count };
+    });
+    const totalOptimalShipsRequired = optimalShipsByRole.reduce((a, b) => a + b.required, 0);
+    const totalOptimalShipsMet = optimalShipsByRole.reduce((a, b) => a + Math.min(b.current, b.required), 0);
+    const totalOptimalRolesRequired = optimalRoleProgress.reduce((a, b) => a + b.required, 0);
+    const totalOptimalRolesMet = optimalRoleProgress.reduce((a, b) => a + Math.min(b.current, b.required), 0);
+    const optimalAllMet = optimalShipsByRole.every((s) => s.met) && optimalRoleProgress.every((r) => r.met);
     return {
         totalShipsRequired,
         totalShipsMet,
@@ -176,6 +211,14 @@ function computeGoalProgress(preset, ships) {
         totalRolesMet,
         roleProgress,
         allMet,
+        hasOptimal,
+        totalOptimalShipsRequired,
+        totalOptimalShipsMet,
+        optimalShipsByRole,
+        totalOptimalRolesRequired,
+        totalOptimalRolesMet,
+        optimalRoleProgress,
+        optimalAllMet,
     };
 }
 // ---------------------------------------------------------------------------
@@ -186,14 +229,26 @@ exports.MISSION_PRESETS = [
         id: "TSG",
         name: "Tactical Strike Group",
         description: "Battle Shattered Blade, infiltrate and extract Gabe",
-        shipRequirements: [{ role: "Frigate", count: 2 },
-            { role: "Fighter", count: 3 }
+        shipRequirements: [
+            { role: "Frigate", count: 2 },
+            { role: "Fighter", count: 3 },
         ],
         roleRequirements: [
             { role: "Pilot", count: 5 },
             { role: "Gunner", count: 2 },
             { role: "Marine", count: 2 },
-
+        ],
+        optimalShipRequirements: [
+            { role: "Frigate", count: 3 },
+            { role: "Fighter", count: 5 },
+            { role: "Transport", count: 1 },
+        ],
+        optimalRoleRequirements: [
+            { role: "Pilot", count: 8 },
+            { role: "Gunner", count: 4 },
+            { role: "Marine", count: 8 },
+            { role: "Medic", count: 2 },
+            { role: "Engineer", count: 1 },
         ],
     }
 ];

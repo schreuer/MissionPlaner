@@ -44,6 +44,12 @@ const SHIP_ICONS: Record<string, string> = {
   // Carriers
   "Kraken":               "🛸",
   "Liberator":            "🛸",
+  // Transports
+  "Caterpillar":          "📦",
+  "Hull C":               "📦",
+  "Freelancer MAX":       "📦",
+  "C2 Hercules":          "📦",
+  "Constellation Taurus": "📦",
 };
 
 function PlayerRow({
