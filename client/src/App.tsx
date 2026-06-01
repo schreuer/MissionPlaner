@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDiscord } from "./hooks/useDiscord";
 import { useSession } from "./hooks/useSession";
 import { PresetSelection } from "./components/PresetSelection";
@@ -30,10 +30,11 @@ export default function App() {
     unassignRole,
   } = useSession(identity);
 
-  // Once we have a session, show the board
-  if (session && view !== "board") {
-    setView("board");
-  }
+  useEffect(() => {
+    if (session) {
+      setView("board");
+    }
+  }, [session]);
 
   if (!ready) {
     return (

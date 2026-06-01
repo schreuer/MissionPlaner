@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 import path from 'path'
 
 // https://vite.dev/config/
+const ngrokHost = process.env.NGROK_HOST ?? 'catlike-snore-bonnet.ngrok-free.dev'
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
@@ -11,7 +13,16 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,
     port: 3000,
+    allowedHosts: [ngrokHost],
+    hmr: process.env.NGROK_HOST
+      ? {
+          host: ngrokHost,
+          protocol: 'wss',
+          clientPort: 443,
+        }
+      : undefined,
     proxy: {
       // Proxy REST API calls
       '/api': {

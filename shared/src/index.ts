@@ -430,16 +430,17 @@ export const MISSION_PRESETS: MissionPreset[] = [
             { role: "Marine", count: 2 },
         ],
         optimalShipRequirements: [
-            { role: "Frigate", count: 3 },
+            { role: "Frigate", count: 2 },
             { role: "Fighter", count: 5 },
             { role: "Transport", count: 1 },
+            { role: "Capital", count: 1 },
         ],
         optimalRoleRequirements: [
-            { role: "Pilot", count: 8 },
+            { role: "Pilot", count: 9 },
             { role: "Gunner", count: 4 },
-            { role: "Marine", count: 8 },
-            { role: "Medic", count: 2 },
-            { role: "Engineer", count: 1 },
+            { role: "Marine", count: 3 },
+            { role: "Medic", count: 1 },
+            { role: "Engineer", count: 2 },
         ],
     }
 ];
