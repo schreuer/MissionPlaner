@@ -1,1 +1,127 @@
-Nothing yet
+# Mission Planer – Discord Activity
+
+A Discord Embedded App for coordinating fleet missions with your squad in a voice channel.
+
+## Features
+
+- **Mission Presets** – pick from built-in missions (Recon Run, Strike Mission, Carrier Escort, Full Assault), each defining required ship types and player roles.
+- **Live Ship Board** – add ships of different types; each ship type restricts which roles crew members may take.
+- **Role Assignment** – click any ship to claim a role. One slot per player across all ships; re-assigning moves you automatically.
+- **Goal Progress Indicator** – real-time per-ship-type and per-role progress bars that turn green when the preset's goal is fully met.
+- **Session Codes** – share an 8-character code so teammates can join your planning session.
+- **Multiplayer Sync** – all changes broadcast instantly via WebSocket.
+
+## Project Structure
+
+```
+MissionPlaner/
+├── shared/        # Shared TypeScript types, preset data, goal helpers
+├── server/        # Express + WebSocket backend  (Node.js)
+└── client/        # React + Vite frontend  (Discord Embedded App SDK)
+```
+
+## Quick Start (Local Dev)
+
+### 1. Prerequisites
+
+- Node.js 18+
+- A Discord Application with the **Activities** feature enabled
+  ([Developer Portal](https://discord.com/developers/applications))
+
+### 2. Environment variables
+
+**server/.env**
+```
+PORT=3001
+DISCORD_CLIENT_ID=your_application_id
+DISCORD_CLIENT_SECRET=your_client_secret
+```
+
+**client/.env**
+```
+VITE_DISCORD_CLIENT_ID=your_application_id
+# Optional: override the WebSocket URL (defaults to ws://localhost:3000/ws via Vite proxy)
+# VITE_WS_URL=wss://your-tunnel-url/ws
+```
+
+### 3. Install & run
+
+```bash
+# From the repository root
+npm install          # installs all workspace packages
+
+# Terminal 1 – backend
+cd server && npm run dev
+
+# Terminal 2 – frontend
+cd client && npm run dev
+```
+
+The client runs on **http://localhost:3000** and proxies `/api` and `/ws` to the server on port 3001.
+
+### 4. Expose via tunnel (required for Discord Activities)
+
+Discord requires HTTPS. Use [cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/downloads/) or [ngrok](https://ngrok.com/):
+
+```bash
+cloudflared tunnel --url http://localhost:3000
+```
+
+Set the tunnel URL as the **URL Mapping** in your Discord Application's Activity settings.
+
+## Data Model
+
+| Concept | Description |
+|---|---|
+| `MissionPreset` | Name, description, list of `{shipType, count}` and `{role, count}` requirements |
+| `ShipSlot` | A ship on the board with a type and assigned players |
+| `PlayerAssignment` | A Discord user bound to a specific role on a ship |
+| `MissionSession` | One planning board: a chosen preset + list of ships + host |
+
+### Ship types and allowed roles
+
+| Ship | Allowed Roles |
+|---|---|
+| Fighter | Pilot, Co-Pilot, Gunner |
+| Bomber | Pilot, Co-Pilot, Bombardier, Gunner |
+| Scout | Pilot, Co-Pilot, Scout, Navigator |
+| Frigate | Captain, Navigator, Engineer, Gunner, Medic, Marine |
+| Destroyer | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician |
+| Cruiser | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
+| Carrier | Captain, Navigator, Engineer, Medic, Technician, Squadron Leader |
+
+## WebSocket Protocol
+
+All real-time communication uses JSON messages over a single WebSocket connection.
+
+**Client → Server**
+
+| type | fields | description |
+|---|---|---|
+| `CREATE_SESSION` | `presetId`, `userId`, `username` | Create a new planning session |
+| `JOIN` | `sessionId`, `userId`, `username` | Join an existing session by code |
+| `ADD_SHIP` | `sessionId`, `shipType`, `shipName` | Add a ship to the board |
+| `REMOVE_SHIP` | `sessionId`, `shipId` | Remove a ship (host only enforced client-side) |
+| `ASSIGN_ROLE` | `sessionId`, `shipId`, `role`, `userId`, `username` | Claim a role on a ship |
+| `UNASSIGN_ROLE` | `sessionId`, `shipId`, `userId` | Leave a ship |
+| `GET_STATE` | `sessionId` | Request current session state |
+
+**Server → Client**
+
+| type | fields |
+|---|---|
+| `SESSION_CREATED` | `session` |
+| `SESSION_STATE` | `session` |
+| `ERROR` | `message` |
+
+## Build
+
+```bash
+# Type-check all packages
+cd shared && npx tsc
+cd server && npx tsc --noEmit
+cd client && npx tsc --noEmit
+
+# Production build
+cd client && npm run build
+```
