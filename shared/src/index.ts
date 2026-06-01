@@ -27,6 +27,7 @@ export type ShipType =
   | "Vanguard Warden"
   | "Vanguard Sentinel"
   | "Corsair"
+  | "M80"
   // ── Bombers ──────────────────────────────────────────────────────────────
   | "Gladiator"
   | "Vanguard Harbinger"
@@ -39,6 +40,7 @@ export type ShipType =
   | "Polaris"
   | "Valkyrie"
   | "A2 Hercules"
+  | "Perseus"
   // ── Capital ships ─────────────────────────────────────────────────────────
   | "Javelin"
   | "Idris-M"
@@ -84,6 +86,7 @@ export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
   "Vanguard Warden":      ["Pilot", "Co-Pilot"],
   "Vanguard Sentinel":    ["Pilot", "Co-Pilot"],
   "Corsair":              ["Pilot", "Co-Pilot", "Gunner"],
+  "M80":                  ["Pilot"],
   // ── Bombers ──────────────────────────────────────────────────────────────
   "Gladiator":            ["Pilot", "Bombardier"],
   "Vanguard Harbinger":   ["Pilot", "Co-Pilot", "Bombardier"],
@@ -96,6 +99,7 @@ export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
   "Polaris":              ["Captain", "Navigator", "Engineer", "Gunner", "Marine", "Medic"],
   "Valkyrie":             ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic"],
   "A2 Hercules":          ["Pilot", "Co-Pilot", "Gunner", "Bombardier", "Marine", "Engineer"],
+  "Perseus":              ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic", "Technician"],
   // ── Capital ships ─────────────────────────────────────────────────────────
   "Javelin":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Squadron Leader"],
   "Idris-M":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Squadron Leader"],
@@ -113,47 +117,49 @@ export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
  */
 export const SHIP_ROLE_CAPACITY: Record<ShipType, Partial<Record<Role, number>>> = {
   // ── Light / single-seat fighters ────────────────────────────────────────
-  "Gladius":              { Pilot: 1 },
-  "Arrow":                { Pilot: 1 },
-  "M50":                  { Pilot: 1 },
-  "Sabre":                { Pilot: 1 },
-  "F7C Hornet":           { Pilot: 1 },
-  "Talon":                { Pilot: 1 },
-  "Buccaneer":            { Pilot: 1 },
-  "Eclipse":              { Pilot: 1 },
+  "Gladius": { Pilot: 1 },
+  "Arrow": { Pilot: 1 },
+  "M50": { Pilot: 1 },
+  "Sabre": { Pilot: 1 },
+  "F7C Hornet": { Pilot: 1 },
+  "Talon": { Pilot: 1 },
+  "Buccaneer": { Pilot: 1 },
+  "Eclipse": { Pilot: 1 },
   // ── Two-seat fighters / interceptors ────────────────────────────────────
-  "F7C-M Super Hornet":   { Pilot: 1, Gunner: 1 },
-  "Scorpius":             { Pilot: 1, Gunner: 1 },
-  "Sabre Comet":          { Pilot: 1, "Co-Pilot": 1 },
-  "Sabre Raven":          { Pilot: 1, Scout: 1 },
+  "F7C-M Super Hornet": { Pilot: 1, Gunner: 1 },
+  "Scorpius": { Pilot: 1, Gunner: 1 },
+  "Sabre Comet": { Pilot: 1, "Co-Pilot": 1 },
+  "Sabre Raven": { Pilot: 1, Scout: 1 },
   // ── Scout / recon ────────────────────────────────────────────────────────
-  "F7C-S Hornet Ghost":   { Pilot: 1, Scout: 1 },
+  "F7C-S Hornet Ghost": { Pilot: 1, Scout: 1 },
   "F7C-R Hornet Tracker": { Pilot: 1, Navigator: 1 },
-  "Terrapin":             { Pilot: 1, Navigator: 1, Scout: 2 },
-  "Herald":               { Pilot: 1, Navigator: 1 },
+  "Terrapin": { Pilot: 1, Navigator: 1, Scout: 2 },
+  "Herald": { Pilot: 1, Navigator: 1 },
   // ── Heavy fighters / long-range ──────────────────────────────────────────
-  "Vanguard Warden":      { Pilot: 1, "Co-Pilot": 1 },
-  "Vanguard Sentinel":    { Pilot: 1, "Co-Pilot": 1 },
-  "Corsair":              { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
+  "Vanguard Warden": { Pilot: 1, "Co-Pilot": 1 },
+  "Vanguard Sentinel": { Pilot: 1, "Co-Pilot": 1 },
+  "Corsair": { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
+  "M80": { Pilot: 1 },
   // ── Bombers ──────────────────────────────────────────────────────────────
-  "Gladiator":            { Pilot: 1, Bombardier: 1 },
-  "Vanguard Harbinger":   { Pilot: 1, "Co-Pilot": 1, Bombardier: 1 },
-  "Retaliator":           { Pilot: 1, "Co-Pilot": 1, Bombardier: 2, Gunner: 2 },
+  "Gladiator": { Pilot: 1, Bombardier: 1 },
+  "Vanguard Harbinger": { Pilot: 1, "Co-Pilot": 1, Bombardier: 1 },
+  "Retaliator": { Pilot: 1, "Co-Pilot": 1, Bombardier: 2, Gunner: 2 },
   // ── Multi-crew gunships ───────────────────────────────────────────────────
-  "Redeemer":             { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
+  "Redeemer": { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
   "Constellation Andromeda": { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
+  "Perseus": { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 10, Medic: 2, Technician: 1 },
   // ── Frigates / assault ships ──────────────────────────────────────────────
-  "Hammerhead":           { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 1 },
-  "Polaris":              { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Marine: 4, Medic: 1 },
-  "Valkyrie":             { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 8, Medic: 1 },
-  "A2 Hercules":          { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Bombardier: 2, Marine: 6, Engineer: 1 },
+  "Hammerhead": { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 1 },
+  "Polaris": { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Marine: 4, Medic: 1 },
+  "Valkyrie": { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 8, Medic: 1 },
+  "A2 Hercules": { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Bombardier: 2, Marine: 6, Engineer: 1 },
   // ── Capital ships ─────────────────────────────────────────────────────────
-  "Javelin":              { Captain: 1, Navigator: 1, Engineer: 4, Gunner: 8, Medic: 2, Marine: 10, "Squadron Leader": 1 },
-  "Idris-M":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 8,  "Squadron Leader": 1 },
-  "Idris-P":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 6, Medic: 2, Marine: 6,  "Squadron Leader": 1 },
+  "Javelin": { Captain: 1, Navigator: 1, Engineer: 4, Gunner: 8, Medic: 2, Marine: 10, "Squadron Leader": 1 },
+  "Idris-M": { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 8, "Squadron Leader": 1 },
+  "Idris-P": { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 6, Medic: 2, Marine: 6, "Squadron Leader": 1 },
   // ── Carriers ─────────────────────────────────────────────────────────────
-  "Kraken":               { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, "Squadron Leader": 2 },
-  "Liberator":            { Captain: 1, Navigator: 1, Engineer: 2, Medic: 1, "Squadron Leader": 1 },
+  "Kraken": { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, "Squadron Leader": 2 },
+  "Liberator": { Captain: 1, Navigator: 1, Engineer: 2, Medic: 1, "Squadron Leader": 1 },
 };
 
 /** Total crew capacity for a given ship type (sum of all role capacities). */
@@ -190,6 +196,7 @@ export const SHIP_ROLE_MAP: Record<ShipType, ShipRole> = {
   "Vanguard Warden":      "Fighter",
   "Vanguard Sentinel":    "Fighter",
   "Corsair":              "Fighter",
+  "M80":                  "Fighter",
   // Bombers
   "Eclipse":              "Bomber",
   "Gladiator":            "Bomber",
@@ -204,6 +211,7 @@ export const SHIP_ROLE_MAP: Record<ShipType, ShipRole> = {
   // Gunships
   "Redeemer":             "Gunship",
   "Constellation Andromeda": "Gunship",
+  "Perseus":              "Gunship",
   // Frigates
   "Hammerhead":           "Frigate",
   "Polaris":              "Frigate",
