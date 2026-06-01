@@ -23,6 +23,7 @@ const SHIP_ICONS: Record<string, string> = {
   // Heavy fighters
   "Vanguard Warden":      "🛩",
   "Vanguard Sentinel":    "🛩",
+  "M80":                  "🛩",
   "Corsair":              "🛩",
   // Bombers
   "Gladiator":            "💣",

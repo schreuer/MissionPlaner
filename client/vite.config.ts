@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@mission-planer/shared': path.resolve(__dirname, '../shared/src'),
+      '@mission-planer/shared': path.resolve(__dirname, '../shared/src/index.ts'),
     },
   },
   server: {

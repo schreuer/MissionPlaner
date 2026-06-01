@@ -139,8 +139,8 @@ exports.SHIP_ROLE_MAP = {
     // Gunships
     "Redeemer": "Gunship",
     "Constellation Andromeda": "Gunship",
-    "Perseus": "Gunship",
     // Frigates
+    "Perseus": "Frigate",
     "Hammerhead": "Frigate",
     "Polaris": "Frigate",
     "Valkyrie": "Frigate",
@@ -183,67 +183,17 @@ function computeGoalProgress(preset, ships) {
 // ---------------------------------------------------------------------------
 exports.MISSION_PRESETS = [
     {
-        id: "recon",
-        name: "Recon Run",
-        description: "Light scouting mission – fast and quiet.",
-        shipRequirements: [{ role: "Scout", count: 2 }],
-        roleRequirements: [
-            { role: "Pilot", count: 2 },
-            { role: "Scout", count: 2 },
-            { role: "Navigator", count: 1 },
-        ],
-    },
-    {
-        id: "strike",
-        name: "Strike Mission",
-        description: "Surgical strike on a high-value target.",
-        shipRequirements: [
-            { role: "Fighter", count: 4 },
-            { role: "Bomber", count: 2 },
+        id: "TSG",
+        name: "Tactical Strike Group",
+        description: "Battle Shattered Blade, infiltrate and extract Gabe",
+        shipRequirements: [{ role: "Frigate", count: 2 },
+            { role: "Fighter", count: 3 }
         ],
         roleRequirements: [
-            { role: "Pilot", count: 6 },
-            { role: "Bombardier", count: 2 },
-            { role: "Gunner", count: 4 },
-            { role: "Squadron Leader", count: 1 },
+            { role: "Pilot", count: 5 },
+            { role: "Gunner", count: 2 },
+            { role: "Marine", count: 2 },
+
         ],
-    },
-    {
-        id: "escort",
-        name: "Carrier Escort",
-        description: "Protect a carrier through hostile territory.",
-        shipRequirements: [
-            { role: "Carrier", count: 1 },
-            { role: "Frigate", count: 2 },
-            { role: "Fighter", count: 4 },
-        ],
-        roleRequirements: [
-            { role: "Captain", count: 3 },
-            { role: "Pilot", count: 4 },
-            { role: "Engineer", count: 3 },
-            { role: "Medic", count: 2 },
-            { role: "Gunner", count: 6 },
-            { role: "Squadron Leader", count: 1 },
-        ],
-    },
-    {
-        id: "assault",
-        name: "Full Assault",
-        description: "Large-scale frontal assault on an enemy fleet.",
-        shipRequirements: [
-            { role: "Capital", count: 2 },
-            { role: "Frigate", count: 1 },
-            { role: "Fighter", count: 6 },
-            { role: "Bomber", count: 2 },
-        ],
-        roleRequirements: [
-            { role: "Captain", count: 3 },
-            { role: "Pilot", count: 8 },
-            { role: "Gunner", count: 8 },
-            { role: "Engineer", count: 4 },
-            { role: "Medic", count: 2 },
-            { role: "Marine", count: 6 },
-            { role: "Bombardier", count: 2 },
-        ],
-    },
+    }
 ];
