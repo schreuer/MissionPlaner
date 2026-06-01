@@ -1,13 +1,48 @@
 import type { PlayerAssignment, ShipSlot } from "@mission-planer/shared";
 
 const SHIP_ICONS: Record<string, string> = {
-  Fighter: "✈",
-  Bomber: "💣",
-  Scout: "🔭",
-  Frigate: "⚓",
-  Destroyer: "🛡",
-  Cruiser: "🚀",
-  Carrier: "🛸",
+  // Light fighters
+  "Gladius":              "✈",
+  "Arrow":                "✈",
+  "M50":                  "✈",
+  "Sabre":                "✈",
+  "F7C Hornet":           "✈",
+  "Talon":                "✈",
+  "Buccaneer":            "✈",
+  "Eclipse":              "✈",
+  // Two-seat fighters
+  "F7C-M Super Hornet":   "🛩",
+  "Scorpius":             "🛩",
+  "Sabre Comet":          "🛩",
+  "Sabre Raven":          "🔭",
+  // Scout / recon
+  "F7C-S Hornet Ghost":   "🔭",
+  "F7C-R Hornet Tracker": "🔭",
+  "Terrapin":             "🔭",
+  "Herald":               "🔭",
+  // Heavy fighters
+  "Vanguard Warden":      "🛩",
+  "Vanguard Sentinel":    "🛩",
+  "Corsair":              "🛩",
+  // Bombers
+  "Gladiator":            "💣",
+  "Vanguard Harbinger":   "💣",
+  "Retaliator":           "💣",
+  // Multi-crew gunships
+  "Redeemer":             "🎯",
+  "Constellation Andromeda": "🎯",
+  // Frigates / assault
+  "Hammerhead":           "⚓",
+  "Polaris":              "⚓",
+  "Valkyrie":             "⚓",
+  "A2 Hercules":          "⚓",
+  // Capital ships
+  "Javelin":              "🛡",
+  "Idris-M":              "🛡",
+  "Idris-P":              "🛡",
+  // Carriers
+  "Kraken":               "🛸",
+  "Liberator":            "🛸",
 };
 
 function PlayerRow({

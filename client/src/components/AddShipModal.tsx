@@ -10,7 +10,7 @@ interface Props {
 }
 
 export function AddShipModal({ onAdd, onClose }: Props) {
-  const [type, setType] = useState<ShipType>("Fighter");
+  const [type, setType] = useState<ShipType>("Gladius");
   const [name, setName] = useState("");
 
   function handleSubmit() {

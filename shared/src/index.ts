@@ -2,14 +2,50 @@
 // Ship types and the roles each type allows
 // ---------------------------------------------------------------------------
 
+// Every flyable ship in Star Citizen (selection covering all role categories)
 export type ShipType =
-  | "Fighter"
-  | "Bomber"
-  | "Cruiser"
-  | "Carrier"
-  | "Scout"
-  | "Frigate"
-  | "Destroyer";
+  // ── Light / single-seat fighters ────────────────────────────────────────
+  | "Gladius"
+  | "Arrow"
+  | "M50"
+  | "Sabre"
+  | "F7C Hornet"
+  | "Talon"
+  | "Buccaneer"
+  | "Eclipse"
+  // ── Two-seat fighters / interceptors ────────────────────────────────────
+  | "F7C-M Super Hornet"
+  | "Scorpius"
+  | "Sabre Comet"
+  | "Sabre Raven"
+  // ── Scout / recon ────────────────────────────────────────────────────────
+  | "F7C-S Hornet Ghost"
+  | "F7C-R Hornet Tracker"
+  | "Terrapin"
+  | "Herald"
+  // ── Heavy fighters / long-range ──────────────────────────────────────────
+  | "Vanguard Warden"
+  | "Vanguard Sentinel"
+  | "Corsair"
+  // ── Bombers ──────────────────────────────────────────────────────────────
+  | "Gladiator"
+  | "Vanguard Harbinger"
+  | "Retaliator"
+  // ── Multi-crew gunships ───────────────────────────────────────────────────
+  | "Redeemer"
+  | "Constellation Andromeda"
+  // ── Frigates / assault ships ──────────────────────────────────────────────
+  | "Hammerhead"
+  | "Polaris"
+  | "Valkyrie"
+  | "A2 Hercules"
+  // ── Capital ships ─────────────────────────────────────────────────────────
+  | "Javelin"
+  | "Idris-M"
+  | "Idris-P"
+  // ── Carriers ─────────────────────────────────────────────────────────────
+  | "Kraken"
+  | "Liberator";
 
 export type Role =
   | "Pilot"
@@ -26,53 +62,99 @@ export type Role =
   | "Technician";
 
 export const SHIP_ALLOWED_ROLES: Record<ShipType, Role[]> = {
-  Fighter: ["Pilot", "Co-Pilot", "Gunner"],
-  Bomber: ["Pilot", "Co-Pilot", "Bombardier", "Gunner"],
-  Scout: ["Pilot", "Co-Pilot", "Scout", "Navigator"],
-  Frigate: ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine"],
-  Destroyer: [
-    "Captain",
-    "Navigator",
-    "Engineer",
-    "Gunner",
-    "Medic",
-    "Marine",
-    "Technician",
-  ],
-  Cruiser: [
-    "Captain",
-    "Navigator",
-    "Engineer",
-    "Gunner",
-    "Medic",
-    "Marine",
-    "Technician",
-    "Squadron Leader",
-  ],
-  Carrier: [
-    "Captain",
-    "Navigator",
-    "Engineer",
-    "Medic",
-    "Technician",
-    "Squadron Leader",
-  ],
+  // ── Light / single-seat fighters ────────────────────────────────────────
+  "Gladius":              ["Pilot"],
+  "Arrow":                ["Pilot"],
+  "M50":                  ["Pilot"],
+  "Sabre":                ["Pilot"],
+  "F7C Hornet":           ["Pilot"],
+  "Talon":                ["Pilot"],
+  "Buccaneer":            ["Pilot"],
+  "Eclipse":              ["Pilot"],
+  // ── Two-seat fighters / interceptors ────────────────────────────────────
+  "F7C-M Super Hornet":   ["Pilot", "Gunner"],
+  "Scorpius":             ["Pilot", "Gunner"],
+  "Sabre Comet":          ["Pilot", "Co-Pilot"],
+  "Sabre Raven":          ["Pilot", "Scout"],
+  // ── Scout / recon ────────────────────────────────────────────────────────
+  "F7C-S Hornet Ghost":   ["Pilot", "Scout"],
+  "F7C-R Hornet Tracker": ["Pilot", "Navigator"],
+  "Terrapin":             ["Pilot", "Navigator", "Scout"],
+  "Herald":               ["Pilot", "Navigator"],
+  // ── Heavy fighters / long-range ──────────────────────────────────────────
+  "Vanguard Warden":      ["Pilot", "Co-Pilot"],
+  "Vanguard Sentinel":    ["Pilot", "Co-Pilot"],
+  "Corsair":              ["Pilot", "Co-Pilot", "Gunner"],
+  // ── Bombers ──────────────────────────────────────────────────────────────
+  "Gladiator":            ["Pilot", "Bombardier"],
+  "Vanguard Harbinger":   ["Pilot", "Co-Pilot", "Bombardier"],
+  "Retaliator":           ["Pilot", "Co-Pilot", "Bombardier", "Gunner"],
+  // ── Multi-crew gunships ───────────────────────────────────────────────────
+  "Redeemer":             ["Pilot", "Co-Pilot", "Gunner"],
+  "Constellation Andromeda": ["Pilot", "Co-Pilot", "Gunner"],
+  // ── Frigates / assault ships ──────────────────────────────────────────────
+  "Hammerhead":           ["Captain", "Navigator", "Engineer", "Gunner", "Medic"],
+  "Polaris":              ["Captain", "Navigator", "Engineer", "Gunner", "Marine", "Medic", "Technician"],
+  "Valkyrie":             ["Pilot", "Co-Pilot", "Gunner", "Marine", "Medic"],
+  "A2 Hercules":          ["Pilot", "Co-Pilot", "Gunner", "Bombardier", "Marine", "Engineer"],
+  // ── Capital ships ─────────────────────────────────────────────────────────
+  "Javelin":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Technician", "Squadron Leader"],
+  "Idris-M":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Technician", "Squadron Leader"],
+  "Idris-P":              ["Captain", "Navigator", "Engineer", "Gunner", "Medic", "Marine", "Technician", "Squadron Leader"],
+  // ── Carriers ─────────────────────────────────────────────────────────────
+  "Kraken":               ["Captain", "Navigator", "Engineer", "Medic", "Technician", "Squadron Leader"],
+  "Liberator":            ["Captain", "Navigator", "Engineer", "Medic", "Technician", "Squadron Leader"],
 };
 
 /**
- * Maximum number of players allowed per role on each ship type.
+ * Maximum number of players allowed per role on each ship.
  * Every role listed in SHIP_ALLOWED_ROLES has an explicit entry here.
  * If a role were somehow absent, both the server and the client fall back
  * to a capacity of 1 (one player per role) as a safe default.
  */
 export const SHIP_ROLE_CAPACITY: Record<ShipType, Partial<Record<Role, number>>> = {
-  Fighter:   { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
-  Bomber:    { Pilot: 1, "Co-Pilot": 1, Bombardier: 2, Gunner: 2 },
-  Scout:     { Pilot: 1, "Co-Pilot": 1, Scout: 2, Navigator: 1 },
-  Frigate:   { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Medic: 1, Marine: 6 },
-  Destroyer: { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 2, Marine: 8, Technician: 2 },
-  Cruiser:   { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 10, Technician: 2, "Squadron Leader": 1 },
-  Carrier:   { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, Technician: 3, "Squadron Leader": 2 },
+  // ── Light / single-seat fighters ────────────────────────────────────────
+  "Gladius":              { Pilot: 1 },
+  "Arrow":                { Pilot: 1 },
+  "M50":                  { Pilot: 1 },
+  "Sabre":                { Pilot: 1 },
+  "F7C Hornet":           { Pilot: 1 },
+  "Talon":                { Pilot: 1 },
+  "Buccaneer":            { Pilot: 1 },
+  "Eclipse":              { Pilot: 1 },
+  // ── Two-seat fighters / interceptors ────────────────────────────────────
+  "F7C-M Super Hornet":   { Pilot: 1, Gunner: 1 },
+  "Scorpius":             { Pilot: 1, Gunner: 1 },
+  "Sabre Comet":          { Pilot: 1, "Co-Pilot": 1 },
+  "Sabre Raven":          { Pilot: 1, Scout: 1 },
+  // ── Scout / recon ────────────────────────────────────────────────────────
+  "F7C-S Hornet Ghost":   { Pilot: 1, Scout: 1 },
+  "F7C-R Hornet Tracker": { Pilot: 1, Navigator: 1 },
+  "Terrapin":             { Pilot: 1, Navigator: 1, Scout: 2 },
+  "Herald":               { Pilot: 1, Navigator: 1 },
+  // ── Heavy fighters / long-range ──────────────────────────────────────────
+  "Vanguard Warden":      { Pilot: 1, "Co-Pilot": 1 },
+  "Vanguard Sentinel":    { Pilot: 1, "Co-Pilot": 1 },
+  "Corsair":              { Pilot: 1, "Co-Pilot": 1, Gunner: 2 },
+  // ── Bombers ──────────────────────────────────────────────────────────────
+  "Gladiator":            { Pilot: 1, Bombardier: 1 },
+  "Vanguard Harbinger":   { Pilot: 1, "Co-Pilot": 1, Bombardier: 1 },
+  "Retaliator":           { Pilot: 1, "Co-Pilot": 1, Bombardier: 2, Gunner: 2 },
+  // ── Multi-crew gunships ───────────────────────────────────────────────────
+  "Redeemer":             { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
+  "Constellation Andromeda": { Pilot: 1, "Co-Pilot": 1, Gunner: 3 },
+  // ── Frigates / assault ships ──────────────────────────────────────────────
+  "Hammerhead":           { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 6, Medic: 1 },
+  "Polaris":              { Captain: 1, Navigator: 1, Engineer: 2, Gunner: 4, Marine: 4, Medic: 1, Technician: 1 },
+  "Valkyrie":             { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Marine: 8, Medic: 1 },
+  "A2 Hercules":          { Pilot: 1, "Co-Pilot": 1, Gunner: 2, Bombardier: 2, Marine: 6, Engineer: 1 },
+  // ── Capital ships ─────────────────────────────────────────────────────────
+  "Javelin":              { Captain: 1, Navigator: 1, Engineer: 4, Gunner: 8, Medic: 2, Marine: 10, Technician: 2, "Squadron Leader": 1 },
+  "Idris-M":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 8, Medic: 2, Marine: 8, Technician: 2, "Squadron Leader": 1 },
+  "Idris-P":              { Captain: 1, Navigator: 1, Engineer: 3, Gunner: 6, Medic: 2, Marine: 6, Technician: 2, "Squadron Leader": 1 },
+  // ── Carriers ─────────────────────────────────────────────────────────────
+  "Kraken":               { Captain: 1, Navigator: 1, Engineer: 4, Medic: 3, Technician: 3, "Squadron Leader": 2 },
+  "Liberator":            { Captain: 1, Navigator: 1, Engineer: 2, Medic: 1, Technician: 2, "Squadron Leader": 1 },
 };
 
 /** Total crew capacity for a given ship type (sum of all role capacities). */
@@ -194,7 +276,7 @@ export const MISSION_PRESETS: MissionPreset[] = [
     id: "recon",
     name: "Recon Run",
     description: "Light scouting mission – fast and quiet.",
-    shipRequirements: [{ type: "Scout", count: 2 }],
+    shipRequirements: [{ type: "Terrapin", count: 2 }],
     roleRequirements: [
       { role: "Pilot", count: 2 },
       { role: "Scout", count: 2 },
@@ -206,8 +288,8 @@ export const MISSION_PRESETS: MissionPreset[] = [
     name: "Strike Mission",
     description: "Surgical strike on a high-value target.",
     shipRequirements: [
-      { type: "Fighter", count: 4 },
-      { type: "Bomber", count: 2 },
+      { type: "F7C Hornet", count: 4 },
+      { type: "Retaliator", count: 2 },
     ],
     roleRequirements: [
       { role: "Pilot", count: 6 },
@@ -221,9 +303,9 @@ export const MISSION_PRESETS: MissionPreset[] = [
     name: "Carrier Escort",
     description: "Protect a carrier through hostile territory.",
     shipRequirements: [
-      { type: "Carrier", count: 1 },
-      { type: "Frigate", count: 2 },
-      { type: "Fighter", count: 4 },
+      { type: "Kraken", count: 1 },
+      { type: "Hammerhead", count: 2 },
+      { type: "F7C-M Super Hornet", count: 4 },
     ],
     roleRequirements: [
       { role: "Captain", count: 3 },
@@ -239,10 +321,10 @@ export const MISSION_PRESETS: MissionPreset[] = [
     name: "Full Assault",
     description: "Large-scale frontal assault on an enemy fleet.",
     shipRequirements: [
-      { type: "Destroyer", count: 2 },
-      { type: "Cruiser", count: 1 },
-      { type: "Fighter", count: 6 },
-      { type: "Bomber", count: 2 },
+      { type: "Javelin", count: 2 },
+      { type: "Idris-M", count: 1 },
+      { type: "F7C Hornet", count: 6 },
+      { type: "Retaliator", count: 2 },
     ],
     roleRequirements: [
       { role: "Captain", count: 3 },
