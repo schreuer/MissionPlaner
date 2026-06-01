@@ -144,7 +144,6 @@ export function useSession(identity: Identity | null): UseSessionResult {
         role,
         userId: identity.userId,
         username: identity.username,
-        avatarUrl: identity.avatarUrl,
       });
     },
     [send, session, identity]

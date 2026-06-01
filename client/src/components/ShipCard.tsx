@@ -1,5 +1,4 @@
 import type { PlayerAssignment, ShipSlot } from "@mission-planer/shared";
-import { safeAvatarUrl } from "../lib/avatar";
 
 const SHIP_ICONS: Record<string, string> = {
   Fighter: "✈",
@@ -18,9 +17,6 @@ function PlayerRow({
   player: PlayerAssignment;
   isCurrentUser: boolean;
 }) {
-  // Validate URL once so both the condition and the src attribute use the same safe value.
-  const avatarSrc = safeAvatarUrl(player.avatarUrl);
-
   return (
     <div
       style={{
@@ -32,31 +28,23 @@ function PlayerRow({
         background: isCurrentUser ? "rgba(88,101,242,0.15)" : "var(--bg-input)",
       }}
     >
-      {avatarSrc ? (
-        <img
-          src={avatarSrc}
-          alt={player.username}
-          style={{ width: 20, height: 20, borderRadius: "50%" }}
-        />
-      ) : (
-        <div
-          style={{
-            width: 20,
-            height: 20,
-            borderRadius: "50%",
-            background: "var(--accent)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 10,
-            fontWeight: 700,
-            color: "#fff",
-            flexShrink: 0,
-          }}
-        >
-          {player.username[0]?.toUpperCase()}
-        </div>
-      )}
+      <div
+        style={{
+          width: 20,
+          height: 20,
+          borderRadius: "50%",
+          background: isCurrentUser ? "var(--accent)" : "var(--border)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 10,
+          fontWeight: 700,
+          color: "#fff",
+          flexShrink: 0,
+        }}
+      >
+        {player.username[0]?.toUpperCase()}
+      </div>
       <span style={{ flex: 1, fontSize: 13 }}>
         {player.username}
         {isCurrentUser && (

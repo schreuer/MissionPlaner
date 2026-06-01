@@ -239,7 +239,6 @@ wss.on("connection", (ws) => {
         ship.players.push({
           userId: msg.userId,
           username: msg.username,
-          avatarUrl: msg.avatarUrl,
           role: msg.role,
         });
 

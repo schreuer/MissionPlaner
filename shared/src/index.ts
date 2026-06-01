@@ -109,7 +109,6 @@ export interface MissionPreset {
 export interface PlayerAssignment {
   userId: string;
   username: string;
-  avatarUrl?: string;
   role: Role;
 }
 
@@ -266,7 +265,7 @@ export type WsClientMessage =
   | { type: "CREATE_SESSION"; presetId: string; userId: string; username: string; avatarUrl?: string }
   | { type: "ADD_SHIP"; sessionId: string; shipType: ShipType; shipName: string }
   | { type: "REMOVE_SHIP"; sessionId: string; shipId: string }
-  | { type: "ASSIGN_ROLE"; sessionId: string; shipId: string; role: Role; userId: string; username: string; avatarUrl?: string }
+  | { type: "ASSIGN_ROLE"; sessionId: string; shipId: string; role: Role; userId: string; username: string }
   | { type: "UNASSIGN_ROLE"; sessionId: string; shipId: string; userId: string }
   | { type: "GET_STATE"; sessionId: string };
 
