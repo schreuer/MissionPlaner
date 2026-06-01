@@ -261,8 +261,8 @@ export const MISSION_PRESETS: MissionPreset[] = [
 // ---------------------------------------------------------------------------
 
 export type WsClientMessage =
-  | { type: "JOIN"; sessionId: string; userId: string; username: string; avatarUrl?: string }
-  | { type: "CREATE_SESSION"; presetId: string; userId: string; username: string; avatarUrl?: string }
+  | { type: "JOIN"; sessionId: string; userId: string; username: string }
+  | { type: "CREATE_SESSION"; presetId: string; userId: string; username: string }
   | { type: "ADD_SHIP"; sessionId: string; shipType: ShipType; shipName: string }
   | { type: "REMOVE_SHIP"; sessionId: string; shipId: string }
   | { type: "ASSIGN_ROLE"; sessionId: string; shipId: string; role: Role; userId: string; username: string }

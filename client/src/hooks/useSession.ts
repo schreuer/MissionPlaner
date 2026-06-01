@@ -98,7 +98,6 @@ export function useSession(identity: Identity | null): UseSessionResult {
         presetId,
         userId: identity.userId,
         username: identity.username,
-        avatarUrl: identity.avatarUrl,
       });
     },
     [send, identity]
@@ -112,7 +111,6 @@ export function useSession(identity: Identity | null): UseSessionResult {
         sessionId,
         userId: identity.userId,
         username: identity.username,
-        avatarUrl: identity.avatarUrl,
       });
     },
     [send, identity]
