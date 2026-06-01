@@ -82,13 +82,39 @@ Set the tunnel URL as the **URL Mapping** in your Discord Application's Activity
 
 | Ship | Allowed Roles |
 |---|---|
-| Fighter | Pilot, Co-Pilot, Gunner |
-| Bomber | Pilot, Co-Pilot, Bombardier, Gunner |
-| Scout | Pilot, Co-Pilot, Scout, Navigator |
-| Frigate | Captain, Navigator, Engineer, Gunner, Medic, Marine |
-| Destroyer | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician |
-| Cruiser | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
-| Carrier | Captain, Navigator, Engineer, Medic, Technician, Squadron Leader |
+| Gladius | Pilot |
+| Arrow | Pilot |
+| M50 | Pilot |
+| Sabre | Pilot |
+| F7C Hornet | Pilot |
+| Talon | Pilot |
+| Buccaneer | Pilot |
+| Eclipse | Pilot |
+| F7C-M Super Hornet | Pilot, Gunner |
+| Scorpius | Pilot, Gunner |
+| Sabre Comet | Pilot, Co-Pilot |
+| Sabre Raven | Pilot, Scout |
+| F7C-S Hornet Ghost | Pilot, Scout |
+| F7C-R Hornet Tracker | Pilot, Navigator |
+| Terrapin | Pilot, Navigator, Scout |
+| Herald | Pilot, Navigator |
+| Vanguard Warden | Pilot, Co-Pilot |
+| Vanguard Sentinel | Pilot, Co-Pilot |
+| Corsair | Pilot, Co-Pilot, Gunner |
+| Gladiator | Pilot, Bombardier |
+| Vanguard Harbinger | Pilot, Co-Pilot, Bombardier |
+| Retaliator | Pilot, Co-Pilot, Bombardier, Gunner |
+| Redeemer | Pilot, Co-Pilot, Gunner |
+| Constellation Andromeda | Pilot, Co-Pilot, Gunner |
+| Hammerhead | Captain, Navigator, Engineer, Gunner, Medic |
+| Polaris | Captain, Navigator, Engineer, Gunner, Marine, Medic, Technician |
+| Valkyrie | Pilot, Co-Pilot, Gunner, Marine, Medic |
+| A2 Hercules | Pilot, Co-Pilot, Gunner, Bombardier, Marine, Engineer |
+| Javelin | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
+| Idris-M | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
+| Idris-P | Captain, Navigator, Engineer, Gunner, Medic, Marine, Technician, Squadron Leader |
+| Kraken | Captain, Navigator, Engineer, Medic, Technician, Squadron Leader |
+| Liberator | Captain, Navigator, Engineer, Medic, Technician, Squadron Leader |
 
 ## WebSocket Protocol
 
