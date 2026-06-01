@@ -8,10 +8,14 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "composite": true,
     "paths": {
       "@mission-planer/shared": ["../shared/src"]
     }
   },
   "include": ["src"],
-  "exclude": []
+  "exclude": [],
+  "references": [
+    { "path": "../shared" }
+  ]
 }
