@@ -44,12 +44,13 @@ export function useDiscord(): UseDiscordResult {
       }
 
       if (!devUser) {
-        const randomSuffix = Math.random().toString(36).slice(2, 7);
+        const uuid = crypto.randomUUID();
+        const shortId = uuid.slice(0, 8);
         devUser = {
-          id: `dev-user-${randomSuffix}`,
-          username: `DevUser_${randomSuffix}`,
+          id: `dev-user-${shortId}`,
+          username: `DevUser_${shortId}`,
           avatar: null,
-          global_name: `DevUser_${randomSuffix}`,
+          global_name: `DevUser_${shortId}`,
         };
         try {
           localStorage.setItem(DEV_USER_KEY, JSON.stringify(devUser));
