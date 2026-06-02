@@ -28,17 +28,37 @@ export function useDiscord(): UseDiscordResult {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // If no client ID is configured, run in dev preview mode with a mock user
+    // If no client ID is configured, run in dev preview mode with a unique per-session mock user
     if (!CLIENT_ID) {
       console.warn(
         "[Discord] VITE_DISCORD_CLIENT_ID not set – running in dev mode with a mock user."
       );
-      setUser({
-        id: "dev-user-1",
-        username: "DevUser",
-        avatar: null,
-        global_name: "Dev User",
-      });
+
+      const DEV_USER_KEY = "mission-planer:dev-user";
+      let devUser: DiscordUser | null = null;
+      try {
+        const stored = localStorage.getItem(DEV_USER_KEY);
+        if (stored) devUser = JSON.parse(stored) as DiscordUser;
+      } catch {
+        // ignore parse errors
+      }
+
+      if (!devUser) {
+        const randomSuffix = Math.random().toString(36).slice(2, 7);
+        devUser = {
+          id: `dev-user-${randomSuffix}`,
+          username: `DevUser_${randomSuffix}`,
+          avatar: null,
+          global_name: `DevUser_${randomSuffix}`,
+        };
+        try {
+          localStorage.setItem(DEV_USER_KEY, JSON.stringify(devUser));
+        } catch {
+          // ignore storage errors
+        }
+      }
+
+      setUser(devUser);
       setChannelId("dev-channel");
       setGuildId("dev-guild");
       setReady(true);
@@ -70,12 +90,18 @@ export function useDiscord(): UseDiscordResult {
         if (!tokenRes.ok) throw new Error("Token exchange failed");
         const { access_token } = (await tokenRes.json()) as { access_token: string };
 
-        await sdk.commands.authenticate({ access_token });
+        // authenticate returns the current user directly — use it as the primary source
+        const auth = await sdk.commands.authenticate({ access_token });
+        let discordUser: DiscordUser = auth.user as DiscordUser;
 
-        const userRes = await fetch("https://discord.com/api/v10/users/@me", {
-          headers: { Authorization: "Bearer " + access_token },
-        });
-        const discordUser = (await userRes.json()) as DiscordUser;
+        // Fall back to a direct API call if the SDK didn't return user info
+        if (!discordUser?.id) {
+          const userRes = await fetch("https://discord.com/api/v10/users/@me", {
+            headers: { Authorization: "Bearer " + access_token },
+          });
+          discordUser = (await userRes.json()) as DiscordUser;
+        }
+
         setUser(discordUser);
 
         setChannelId(sdk.channelId);
